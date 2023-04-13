@@ -1,0 +1,15 @@
+<root>
+  <Light>
+    <LightSensor id="Light-sensor" value="27" degree="Photon" />
+    <Time Timearea="VietNam" Timecurrent="2023-04-14 02:58:39.512232" />
+    <brand model="LM393" />
+  </Light>
+  <TempHumi>
+    <Temp id="Temp-sensor" value="30" currency="Celsius" />
+    <Time Timearea="VietNam" Timecurrent="2023-04-14 02:58:39.512232" />
+    <brand model="DHT11" />
+    <Humidity id="Hum-sensor" value="14" currency="%" />
+    <Time Timearea="VietNam" Timecurrent="2023-04-14 02:58:39.512232" />
+    <brand model="DHT11" />
+  </TempHumi>
+</root>
