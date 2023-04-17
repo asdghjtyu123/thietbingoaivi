@@ -1,13 +1,14 @@
 import xml.etree.ElementTree as EL
 import time
 import random
-from pyfirmata import Board
 import threading
-import serial
-import sys
+import Board
+import pyfirmata
 from datetime import datetime
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+import sys
+import serial
 BOARDS = {
     'arduino': {
         'digital': tuple(x for x in range(14)),
@@ -73,14 +74,16 @@ def ahiu(element,inden='  '):
 
 
 
-def createXML(Name,ran,aa,aaa):
+def createXML(Name,ran):
+    aa=0
+    aaa=0
     tree = EL.Element('root')
     Sensor = EL.SubElement(tree,'Light')
     Sensor1 = EL.SubElement(tree,'TempHumi')
     current_date_and_time = datetime.now()
     # while True:
- 
-    EL.SubElement(Sensor,'LightSensor',id='Light-sensor',value="{}".format(ran),degree='Photon')
+    
+    EL.SubElement(Sensor,'LightSensor',id='Light-sensor',value="{}".format(ran),degree='Voltage')
     # plt.plot(current_date_and_time, ran)
     EL.SubElement(Sensor,'Time', Timearea='VietNam',Timecurrent='{}'.format(current_date_and_time))
     EL.SubElement(Sensor,'brand', model='LM393')
@@ -99,26 +102,26 @@ def createXML(Name,ran,aa,aaa):
 
 
 def adu(Name):
-    board = Arduino('/dev/ttyUSB0') 
+    board = pyfirmata.Arduino('COM5') 
 
-    it = Iterator(board)
+    it = pyfirmata.util.Iterator(board)
+    
     it.start()
-    analog_0 = board.get_pin('a:0:i')
+    analog_0 = board.get_pin('a:1:i')
 
     while True:
-        sensor=analog_0.read()    
-        createXML(Name,sensor)
-        time.sleep(2)
+        sensor=analog_0.read()  
+        if (sensor==None):           
+            continue
+        sensor=sensor*10
+        print(sensor*10) 
+        createXML(Name,int(sensor*10))
+        time.sleep(1.5)
 
 
 if __name__ == "__main__":
     Name='Hoang'
-    while True: 
-        a=random.randint(0,50)
-        aa=random.randint(25,30)
-        aaa=random.randint(0,100)
-        createXML(Name,a,aa,aaa)
-        time.sleep(1)
-    # adu(Name)
+   
+    adu(Name)
 
 
